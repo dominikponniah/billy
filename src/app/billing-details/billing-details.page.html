@@ -1,0 +1,80 @@
+<ion-content [fullscreen]="true">
+
+
+  <div class="headerContent">
+    <ion-avatar class="avatar">
+      <img [src]="billingDetails.customBillyData.creditorLogo" />
+    </ion-avatar>
+    <ion-card-header>
+      <ion-card-title>{{ billingDetails.currency}} {{ billingDetails.amount}}</ion-card-title>
+      <ion-card-subtitle>
+        {{billingDetails.creditor.name }}
+      </ion-card-subtitle>
+      <ion-chip style="float: left;" color="success"
+        *ngIf="billingDetails.customBillyData.status == 'PAID'">Bezahlt</ion-chip>
+      <ion-chip style="float: left;" color="danger"
+        *ngIf="billingDetails.customBillyData.status == 'OPEN'">Offen</ion-chip>
+
+    </ion-card-header>
+  </div>
+
+  <ion-list class="bg-transparent">
+    <ion-item>
+      <ion-label>
+        <h4>Rechnungsbetreff</h4>
+        <p>{{ billingDetails.reference }}</p>
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        <h4>Rechnungsdetails</h4>
+        <p>{{ billingDetails.creditor.account }}</p>
+        <p>{{ billingDetails.creditor.address }} {{ billingDetails.creditor.buildingNumber }}</p>
+        <p>{{ billingDetails.creditor.zip }} {{ billingDetails.creditor.city }}</p>
+
+
+      </ion-label>
+    </ion-item>
+  <!--  <ion-item>
+      <ion-label>
+        <h4>Fälligkeit</h4>
+        <p *ngIf="billingDetails.customBillyData.dueDate == undefined">
+          Tippen, um Fälligkeitsdatum zu hinterlegen </p>
+        <p *ngIf="billingDetails.customBillyData.dueDate !== undefined">{{ billingDetails.customBillyData.dueDate }}</p>
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        <h4>Notizen</h4>
+        <p *ngIf="billingDetails.customBillyData.dueDate == undefined">
+          Tippen, um Notizen hinzuzufügen </p>
+        <p *ngIf="billingDetails.customBillyData.dueDate !== undefined">{{ billingDetails.customBillyData.dueDate }}</p>
+      </ion-label>
+    </ion-item> -->
+  </ion-list>
+  <div class="bottomControl" style="font-size: 11px; text-align: center;margin-top: 10px;">
+    <span *ngIf="billingDetails.customBillyData.status == 'PAID'">
+      Am {{ billingDetails.customBillyData.paidTimestamp | date: 'dd.MM.yyyy' }} um {{ billingDetails.customBillyData.paidTimestamp | date: 'HH:mm' }} als bezahlt markiert.</span>
+<br><br>
+    <span (click)="deletePosition()">Diese Rechnung entfernen</span>
+  </div>
+
+  <ion-fab (click)="dismissModal()"  slot="fixed" vertical="bottom" horizontal="start">
+    <ion-fab-button>
+      <ion-icon name="arrow-back"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+
+  <ion-fab (click)="setAsPaid()" *ngIf="billingDetails.customBillyData.status !== 'PAID'"  slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button color="success">
+      <ion-icon name="checkmark"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <ion-fab (click)="setAsUnPaid()" *ngIf="billingDetails.customBillyData.status == 'PAID'" slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button color="danger">
+      <ion-icon name="close"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>
